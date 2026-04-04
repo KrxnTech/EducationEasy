@@ -82,5 +82,65 @@ const getAdminDashboard = async (req, res) => {
     teacherWorkloads,
   })
 }
+// GET /api/admin/teachers — all teachers with their class + workload info
+const getAllTeachers = async (req, res) => {
+  const teachers = await prisma.teacher.findMany({
+    select: {
+      id:        true,
+      name:      true,
+      email:     true,
+      subject:   true,
+      createdAt: true,
+      classes: {
+        include: {
+          students: { select: { id: true } } // just count, no data leak
+        }
+      },
+      timetable: { select: { id: true } }    // just count
+    },
+    orderBy: { name: 'asc' }
+  })
 
-module.exports = { getAdminDashboard }
+  const result = teachers.map(t => ({
+    id:           t.id,
+    name:         t.name,
+    email:        t.email,
+    subject:      t.subject,
+    createdAt:    t.createdAt,
+    classCount:   t.classes.length,
+    studentCount: t.classes.reduce((sum, c) => sum + c.students.length, 0),
+    periodCount:  t.timetable.length,
+    classes:      t.classes.map(c => ({
+      id:           c.id,
+      name:         c.name,
+      studentCount: c.students.length
+    }))
+  }))
+
+  res.json({ teachers: result })
+}
+// GET /api/admin/classes — all classes with teacher info (admin only)
+const getAllClasses = async (req, res) => {
+  const classes = await prisma.class.findMany({
+    include: {
+      teacher:  { select: { id: true, name: true, subject: true } },
+      students: { select: { id: true } },
+    },
+    orderBy: { name: 'asc' }
+  })
+
+  const result = classes.map(c => ({
+    id:           c.id,
+    name:         c.name,
+    grade:        c.grade,
+    section:      c.section,
+    teacherId:    c.teacher.id,
+    teacherName:  c.teacher.name,
+    subject:      c.teacher.subject,
+    studentCount: c.students.length,
+  }))
+
+  res.json({ classes: result })
+}
+
+module.exports = { getAdminDashboard, getAllTeachers, getAllClasses }

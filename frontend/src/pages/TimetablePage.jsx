@@ -48,16 +48,23 @@ export default function TimetablePage() {
   const loadClasses = async () => {
     try {
       setLoadingClasses(true)
-      // Use the dashboard endpoint — it returns classes with id
-      const res = await api.get('/teachers/dashboard')
-      const cls = res.data.classes || []
-      setClasses(cls)
 
-      if (cls.length > 0) {
-        setSelectedClassId(cls[0].id) // set as number, not string
+      if (user?.role === 'admin') {
+        // Admin: fetch all classes from admin endpoint
+        const res = await api.get('/admin/classes')
+        const cls = res.data.classes || []
+        setClasses(cls)
+        if (cls.length > 0) setSelectedClassId(cls[0].id)
+      } else {
+        // Teacher: fetch their own classes from dashboard
+        const res = await api.get('/teachers/dashboard')
+        const cls = res.data.classes || []
+        setClasses(cls)
+        if (cls.length > 0) setSelectedClassId(cls[0].id)
       }
     } catch (err) {
       console.error('Failed to load classes:', err)
+      setTableError('Could not load classes: ' + (err.response?.data?.error || err.message))
     } finally {
       setLoadingClasses(false)
     }
@@ -77,13 +84,24 @@ export default function TimetablePage() {
       setShowGenerated(false)
       setGenerated([])
 
-      // Pass teacherId so backend filters correctly for this teacher
-      const res = await api.get('/timetable', {
-        params: { teacherId: user.id }
-      })
+      // For admin: fetch timetable by classId using teacherId from the class
+      // For teacher: fetch by their own teacherId
+      let params = {}
 
-      // Filter client-side for the selected class
-      const all      = res.data.timetable || []
+      if (user?.role === 'admin') {
+        // Find the teacherId for this class
+        const cls = classes.find(c => c.id === classId)
+        if (cls?.teacherId) {
+          params = { teacherId: cls.teacherId }
+        }
+      } else {
+        params = { teacherId: user.id }
+      }
+
+      const res = await api.get('/timetable', { params })
+      const all = res.data.timetable || []
+
+      // Filter for selected class
       const filtered = all.filter(t => t.classId === classId)
       setTimetable(filtered)
 
@@ -107,13 +125,9 @@ export default function TimetablePage() {
       setSaveSuccess('')
       setShowGenerated(false)
 
-      console.log('Generating for classId:', selectedClassId)
-
       const res = await api.post('/timetable/generate', {
         classId: selectedClassId
       })
-
-      console.log('Generated timetable:', res.data)
 
       const entries = res.data.timetable || []
       if (entries.length === 0) {
@@ -127,7 +141,8 @@ export default function TimetablePage() {
     } catch (err) {
       console.error('Generation error:', err)
       setGenError(
-        err.response?.data?.error || 'Generation failed. Check your GROQ_API_KEY in backend/.env'
+        err.response?.data?.error ||
+        'Generation failed. Check your GROQ_API_KEY in backend/.env'
       )
     } finally {
       setGenerating(false)

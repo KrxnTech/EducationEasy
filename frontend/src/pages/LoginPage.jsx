@@ -51,7 +51,7 @@ export default function LoginPage() {
       <div className="hidden lg:flex lg:w-1/2 bg-accent flex-col justify-between p-16 relative overflow-hidden border-r-4 border-foreground">
 
         {/* Wild Decorations */}
-        <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-tertiary rounded-full opacity-20 blur-3xl animate-pulse" />
+        <div className="absolute top-[-10%] right-[-10%] w-125 h-125 bg-tertiary rounded-full opacity-20 blur-3xl animate-pulse" />
         <div className="absolute bottom-[-5%] left-[-5%] w-64 h-64 bg-secondary rounded-full border-4 border-foreground shadow-pop-secondary rotate-12" />
         <div className="absolute top-1/4 right-12 w-24 h-24 bg-quaternary rounded-2xl border-4 border-foreground shadow-pop rotate-[-15deg] animate-bounce" />
         <div className="absolute top-1/2 left-8 w-16 h-16 bg-white rounded-full border-4 border-foreground shadow-pop" />
@@ -62,7 +62,7 @@ export default function LoginPage() {
         {/* Logo Section */}
         <div className="relative z-10 animate-bounce-in">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-white border-4 border-foreground rounded-2xl shadow-pop flex items-center justify-center rotate-[-3deg]">
+            <div className="w-14 h-14 bg-white border-4 border-foreground rounded-2xl shadow-pop flex items-center justify-center rotate--3d">
               <GraduationCap className="w-8 h-8 text-accent stroke-[2.5px] animate-wiggle" />
             </div>
             <div>
@@ -111,7 +111,7 @@ export default function LoginPage() {
               </div>
             ))}
           </div>
-          <p className="text-white font-bold text-sm">Joined by 2,000+ teachers today !</p>
+          <p className="text-white font-bold text-sm"></p>
         </div>
       </div>
 
@@ -119,13 +119,13 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center p-8 bg-dot-grid relative">
 
         {/* Scrawled arrow decoration (Hidden on mobile) */}
-        <div className="hidden xl:block absolute left-[-40px] top-1/2 -translate-y-1/2 z-20">
-          <div className="bg-white border-2 border-foreground p-3 rounded-full shadow-pop-tertiary rotate-[-90deg]">
+        <div className="hidden xl:block absolute -left-10 top-1/2 -translate-y-1/2 z-20">
+          <div className="bg-white border-2 border-foreground p-3 rounded-full shadow-pop-tertiary -rotate-90">
             <ArrowRight className="w-6 h-6" />
           </div>
         </div>
 
-        <div className="w-full max-w-[480px] relative">
+        <div className="w-full max-w-120 relative">
 
           {/* Mobile Logo */}
           <div className="lg:hidden flex items-center gap-3 mb-10 justify-center">
@@ -136,7 +136,7 @@ export default function LoginPage() {
           </div>
 
           {/* Main Card — The "Sticker" Card */}
-          <div className="bg-white border-4 border-foreground rounded-[2rem] p-10 shadow-pop-secondary relative animate-bounce-in hover:rotate-1 hover:scale-[1.01] transition-playful">
+          <div className="bg-white border-4 border-foreground rounded-4xl p-10 shadow-pop-secondary relative animate-bounce-in hover:rotate-1 hover:scale-[1.01] transition-playful">
 
             {/* Corner Accent Shape */}
             <div className="absolute -top-6 -right-6 w-20 h-20 bg-tertiary border-4 border-foreground rounded-full flex items-center justify-center shadow-pop rotate-12 z-10">
@@ -154,7 +154,7 @@ export default function LoginPage() {
                   type="button"
                   onClick={() => { setRole(r); setError('') }}
                   className={`flex-1 py-4 px-2 rounded-2xl font-black text-sm uppercase tracking-wider border-4 border-foreground transition-playful ${role === r
-                    ? 'bg-accent text-white shadow-pop translate-x-[-2px] translate-y-[-2px]'
+                    ? 'bg-accent text-white shadow-pop translate-x-0.5 translate-y-0.5'
                     : 'bg-white text-foreground hover:bg-muted'
                     }`}
                 >
@@ -225,13 +225,13 @@ export default function LoginPage() {
               <div className="flex flex-wrap gap-3 justify-center">
                 <button
                   onClick={() => fillDemo('teacher')}
-                  className="px-4 py-2 bg-secondary/10 hover:bg-secondary text-secondary-foreground border-2 border-foreground rounded-lg text-xs font-black rotate-[-2deg] transition-playful hover:rotate-0 hover:scale-110 shadow-sm"
+                  className="px-4 py-2 bg-secondary/10 hover:bg-secondary text-secondary-foreground border-2 border-foreground rounded-lg text-xs font-black -rotate-2 transition-playful hover:rotate-0 hover:scale-110 shadow-sm"
                 >
                   Priya (Teacher)
                 </button>
                 <button
                   onClick={() => fillDemo('admin')}
-                  className="px-4 py-2 bg-tertiary/10 hover:bg-tertiary text-tertiary-foreground border-2 border-foreground rounded-lg text-xs font-black rotate-[3deg] transition-playful hover:rotate-0 hover:scale-110 shadow-sm"
+                  className="px-4 py-2 bg-tertiary/10 hover:bg-tertiary text-tertiary-foreground border-2 border-foreground rounded-lg text-xs font-black rotate-3 transition-playful hover:rotate-0 hover:scale-110 shadow-sm"
                 >
                   Admin (Principal)
                 </button>

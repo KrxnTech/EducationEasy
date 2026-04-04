@@ -16,6 +16,7 @@ import AlertsPage          from '@/pages/AlertsPage'
 import TimetablePage       from '@/pages/TimetablePage'
 import AdminDashboard      from '@/pages/AdminDashboard'
 import AdminStudentsPage   from '@/pages/AdminStudentsPage'
+import AdminTeachersPage from '@/pages/AdminTeachersPage'
 import StudentProfilePage  from '@/pages/StudentProfilePage'
 
 export default function App() {
@@ -62,6 +63,9 @@ export default function App() {
       } />
       <Route path="/admin/students" element={
         <ProtectedRoute requiredRole="admin"><AdminStudentsPage /></ProtectedRoute>
+      } />
+      <Route path="/admin/teachers" element={
+        <ProtectedRoute requiredRole="admin"><AdminTeachersPage /></ProtectedRoute>
       } />
 
       {/* Default redirect */}

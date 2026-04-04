@@ -23,7 +23,6 @@ export default function GradesPage() {
     fetchHeatmap();
   }, []);
 
-  // 📊 Fetch all students + grades
   const fetchGrades = async () => {
     const res = await axios.get(
       "http://localhost:5000/api/grades?classId=4"
@@ -31,7 +30,6 @@ export default function GradesPage() {
 
     setStudents(res.data.students);
 
-    // Auto select first student
     if (res.data.students.length > 0) {
       const first = res.data.students[0];
       setSelectedStudent(first.id);
@@ -39,7 +37,7 @@ export default function GradesPage() {
     }
   };
 
-  // 🔥 Fetch heatmap
+  
   const fetchHeatmap = async () => {
     const res = await axios.get(
       "http://localhost:5000/api/grades/heatmap?classId=4"
@@ -48,7 +46,7 @@ export default function GradesPage() {
     setHeatmap(res.data.heatmap);
   };
 
-  // 📈 Fetch student trend
+  
   const fetchStudentGrades = async (id) => {
     const res = await axios.get(
       `http://localhost:5000/api/grades/student/${id}`
